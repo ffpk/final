@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    namespace:写当前mapper文件对应的dao接口的全类名
+ -->
+<mapper namespace="com.baizhi.dao.AlbumDao">
+
+
+    <resultMap type="Album" id="albumResultMap">
+        <result column="id" property="id"/>
+        <result column="name1" property="name"/>
+        <result column="brief" property="brief"/>
+        <collection property="children" javaType="java.util.List" ofType="Chapter">
+            <result column="id1" property="id"/>
+            <result column="name" property="name"/>
+            <result column="url" property="url"></result>
+            <result column="size" property="size"></result>
+            <result column="duration" property="duration"></result>
+        </collection>
+
+    </resultMap>
+
+
+    <!--一对多查询-->
+    <select id="getCategoryTree" resultMap="albumResultMap">
+        select t1.id,t1.name name1,t1.brief ,
+t2.id id1,t2.name,t2.url,t2.size,t2.duration from album t1 left join chapter t2
+on t1.id=t2.album_id
+    </select>
+
+    <!--添加-->
+    <insert id="insert">
+        insert into album values(0,#{name},#{coverImg},#{count},#{score},#{author},#{broadCat},#{brief},SYSDATE())
+
+    </insert>
+
+
+
+</mapper>
